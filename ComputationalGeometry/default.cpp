@@ -34,6 +34,7 @@ struct Polygon{
     Polygon(
 
 }
+typedef Polygon polygon;
 
 const db PI = acos(-1);
 const db INF = 1e18;
@@ -56,6 +57,16 @@ db operator*(const point &p1,const point&p2){
 }
 db operator^(const point &p1,const point&p2){
     return p1.x*p2.y-p1.y*p2.x;
+}
+bool operator<(const point&p1, const point&p2){
+    if(p1.x<p2.x-EPS)return true;
+    if(p1.x>p2.x+EPS)return false;
+    if(p1.y<p2.y-EPS)return true;
+    return false
+}
+
+polygon convexHull(polygon &p){
+    
 }
 
 int main() {
