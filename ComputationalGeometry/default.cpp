@@ -13,77 +13,49 @@ typedef double db;
 
 struct Point{
     db x,y;
-    Point(db a=0, db b=0){x=a;y=b;}
+    Point(db a,db b){x=a;y=b;}
+    Point(){x=0;y=0;}
+    Point operator=(Point p){
+        x=p.x;y=p.y;
+        return *this;
+    }
 };
+typedef Point point;
+struct Segment{
+    Point p1, p2;
+    Segment(point a, point b){p1=a;p2=b;}
+    Segment(){p1=Point(0,0);p2=Point(0,0);}
+};
+typedef Segment segment;
 
-typedef Point Vector;
+struct Polygon{
+    vector<point>pointList;
+    Polygon(vector<point>a){pointList=a;}
+    Polygon(
+
+}
 
 const db PI = acos(-1);
 const db INF = 1e18;
 const db EPS = 1e-8;
 
-Point operator+(const Point &p1, const Point &p2){
-    return Point(p1.x+p2.x,p1.y+p2.y);
+point operator+(const point &p1, const point &p2){
+    return point(p1.x+p2.x,p1.y+p2.y);
 }
-Point operator-(const Point &p1, const Point &p2){
-    return Point(p1.x-p2.x,p1.y-p2.y);
+point operator-(const point &p1, const point &p2){
+    return point(p1.x-p2.x,p1.y-p2.y);
 }
-Point operator*(const Point &p, const db &k){
-    return Point(p1.x*k,p1.y*k);
+point operator*(const point &p, const db &k){
+    return point(p.x*k,p.y*k);
 }
-Point operator/(const Point &p, const db &k){
-    return Point(p1.x/k,p1.y/k);
+point operator/(const point &p, const db &k){
+    return point(p.x/k,p.y/k);
 }
-db dot(const PDD &a, const PDD &b) {
-    return a.F*b.F + a.S*b.S;
+db operator*(const point &p1,const point&p2){
+    return  p1.x*p2.x+p1.y*p2.y;
 }
-db cross(const PDD &a, const PDD &b) {
-    return a.F*b.S - a.S*b.F;
-}
-db abs2(const PDD &a) {
-    return dot(a, a);
-}
-db abs(const PDD &a) {
-    return sqrt( abs2(a) );
-}
-
-
-PDD inter(const PDD &p1, const PDD &v1, const PDD &p2, const PDD &v2) // intersection
-{
-    if(fabs(cross(v1, v2)) < EPS)
-        return MP(INF, INF);
-    db k = cross((p2-p1), v2) / cross(v1, v2);
-    return p1 + v1*k;
-}
-void CircleInter(PDD o1, db r1, PDD o2, db r2) {
-    if(r2>r1)
-        swap(r1, r2), swap(o1, o2);
-    db d = abs(o2-o1);
-    PDD v = o2-o1;
-    v = v / abs(v);
-    PDD t = MP(v.S, -v.F);
-
-    db area;
-    vector<PDD> pts;
-    if(d > r1+r2+EPS)
-        area = 0;
-    else if(d < r1-r2)
-        area = r2*r2*PI;
-    else if(r2*r2+d*d > r1*r1){
-        db x = (r1*r1 - r2*r2 + d*d) / (2*d);
-        db th1 = 2*acos(x/r1), th2 = 2*acos((d-x)/r2);
-        area = (r1*r1*(th1 - sin(th1)) + r2*r2*(th2 - sin(th2))) / 2;
-        db y = sqrt(r1*r1 - x*x);
-        pts.PB(o1 + v*x + t*y), pts.PB(o1 + v*x - t*y);
-    } else {
-        db x = (r1*r1 - r2*r2 - d*d) / (2*d);
-        db th1 = acos((d+x)/r1), th2 = acos(x/r2);
-        area = r1*r1*th1 - r1*d*sin(th1) + r2*r2*(PI-th2);
-        db y = sqrt(r2*r2 - x*x);
-        pts.PB(o2 + v*x + t*y), pts.PB(o2 + v*x - t*y);
-    }
-    //Area: area
-    //Intersections: pts
+db operator^(const point &p1,const point&p2){
+    return p1.x*p2.y-p1.y*p2.x;
 }
 
 int main() {
