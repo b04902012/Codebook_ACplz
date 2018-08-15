@@ -77,10 +77,23 @@ bool cmp(const &Sg a,const &Sg b){
     if(!eq(a.vtr().angle(),b.vtr().angle))return a.vtr().angle()<b.vtr().angle();
     return gt((b.t-a.s)^a,0);
 }
-void halfPlaneIntersect(vector<Sg>v,vector<sg>&o){
-    o.clear();
-    o.PB(v[0]);
+void halfPlaneIntersect(vector<Sg>v,vector<sg>&res){
+    v.PB(Sg(Pt(INF/2.0,-INF/2.0),Pt(INF/2.0,INF/2.0)));
+    v.PB(Sg(Pt(INF/2.0,INF/2.0),Pt(-INF/2.0,INF/2.0)));
+    v.PB(Sg(Pt(-INF/2.0,INF/2.0),Pt(-INF/2.0,-INF/2.0)));
+    v.PB(Sg(Pt(-INF/2.0,-INF/2.0),Pt(INF/2.0,-INF/2.0)));
+    sort(v.begin(),v.end(),cmp);
+    int j=0,l=v.size();
+    for(int i=1;i<l;i++){
+        if(!eq(v[i].vtr().angle(),v[j].vtr().angle())){
+            j++;
+            v[j]=v[i];
+        }
+    }
+    v.resize(j+1);
+    }
+    deque<sg>dq;
     int n=v.size();
     for(int i=1;i<n;i++){
-        if(eq(v[i].vtr().angle(),v[i-1].vtr().angle()))continue;
+        while(inersect
     }
