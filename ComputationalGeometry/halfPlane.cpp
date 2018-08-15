@@ -54,6 +54,7 @@ struct Pg{
         db a=0.0;
         for(int i=0;i<l;i++)a+=lst[i]^lst[i+1];
         a/=2.0;
+        return a;
     }
     void sort(){
         if(lt(area(),0))reverse(lst.begin(),lst.end());
@@ -72,7 +73,14 @@ Pt intersect(Sg a,Sg b,bool range=true){
     if(a.on(p)&&b.on(p))return p;
     return ERR;
 }
-
-int main() {
-    return 0;
+bool cmp(const &Sg a,const &Sg b){
+    if(!eq(a.vtr().angle(),b.vtr().angle))return a.vtr().angle()<b.vtr().angle();
+    return gt((b.t-a.s)^a,0);
 }
+void halfPlaneIntersect(vector<Sg>v,vector<sg>&o){
+    o.clear();
+    o.PB(v[0]);
+    int n=v.size();
+    for(int i=1;i<n;i++){
+        if(eq(v[i].vtr().angle(),v[i-1].vtr().angle()))continue;
+    }
