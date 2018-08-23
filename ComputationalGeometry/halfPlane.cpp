@@ -17,8 +17,8 @@ const db INF=1e9;
 const db EPS=1e-10;
 const db PI=acos((db)-1);
 
-bool gt(db a,db b){return a>b+b*EPS;}
-bool lt(db a,db b){return a<b-b*EPS;}
+bool gt(db a,db b){return a>b+EPS;}
+bool lt(db a,db b){return a<b-EPS;}
 bool eq(db a,db b){return !gt(a,b)&&!lt(a,b);}
 
 struct Pt {
@@ -43,7 +43,7 @@ db operator*(Pt a,Pt b){return a.x*b.x+a.y*b.y;}
 db operator^(Pt a,Pt b){return a.x*b.y-a.y*b.x;}
 bool operator==(Pt a,Pt b){return eq(a.x,b.x)&&eq(a.y,b.y);}
 bool operator!=(Pt a,Pt b){return !(a==b);}
-bool prl(Pt a,Pt b){return eq(atan2(a.y,a.x),atan2(b.y,b.x));}
+bool prl(Pt a,Pt b){return eq(atan2(a.y,a.x),atan2(b.y,b.x))||eq(atan2(a.y,a.x)+2*PI,atan2(b.y,b.x))||eq(atan2(a.y,a.x),atan2(b.y,b.x)+2*PI);}
 
 struct Sg{
     Pt s,t;
@@ -51,7 +51,7 @@ struct Sg{
     Sg(Pt s,Pt t):s(s),t(t){}
     Sg(double a,double b,double c,double d):s(a, b),t(c,d){}
     Pt vtr()const{return t-s;};
-    bool on(Pt p,bool range=true)const{return prl(p-s,p-t)&&!gt((p-s)*(p-t),0);}
+    bool on(Pt p,bool range=true)const{return s==p||t==p||(prl(p-s,t-p)&&!gt((p-s)*(p-t),0));}
     void print()const{
         puts("s:");s.print();
         puts("t:");t.print();
@@ -140,4 +140,7 @@ void halfPlaneIntersect(vector<Sg>v,vector<Sg>&res){
         res.PB(v[i]);
     }
     return;
+}
+int main(){
+
 }
